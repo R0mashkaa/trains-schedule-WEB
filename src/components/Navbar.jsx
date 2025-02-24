@@ -51,12 +51,10 @@ export const Navbar = () => {
   const handleSignIn = async () => {
     if (!isFormValid) return
     try {
-      const { data } = await axiosInstance
-        .post(route.auth_signIn, {
-          email: formData.email,
-          password: formData.password,
-        })
-        .then(toast.success('Successfully signed in!'))
+      const { data } = await axiosInstance.post(route.auth_signIn, {
+        email: formData.email,
+        password: formData.password,
+      })
       Cookies.set('access_token', data.access_token, { expires: 1 })
       setUserToken(data.access_token)
       setIsDropdownOpen(false)
@@ -219,6 +217,12 @@ export const Navbar = () => {
                         onClick={handleSignUp}
                       >
                         Register
+                      </button>
+                      <button
+                        onClick={() => setIsRegistered(false)}
+                        className="w-full mt-2 px-4 py-2 text-sm text-blue-500 dark:text-blue-300"
+                      >
+                        Already registered?
                       </button>
                     </div>
                   )}
