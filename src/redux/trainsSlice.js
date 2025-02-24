@@ -5,7 +5,6 @@ const initialState = {
   loading: '',
   trains: [],
   favoriteTrains: [],
-  favoriteTrains: [],
   totalTrains: 0,
   error: null,
 }
@@ -38,7 +37,10 @@ export const addFavoriteTrain = createAsyncThunk(
         {
           headers: { Authorization: `Bearer ${token}` },
         }
-      )
+      ).then((e) => console.log(e)
+      ).catch((e) => console.log(e))
+
+      console.log(response);
 
       return response.data
     } catch (error) {
@@ -61,6 +63,7 @@ export const fetchFavoriteTrains = createAsyncThunk(
 
       return response.data
     } catch (error) {
+      console.log(2222, error)
       return rejectWithValue(error.message)
     }
   }
@@ -75,10 +78,14 @@ export const deleteFavoriteTrain = createAsyncThunk(
         {
           headers: { Authorization: `Bearer ${token}` },
         }
-      )
+      ).then((e) => console.log(e)
+      ).catch((e) => console.log(e))
+      console.log(response);
+
 
       return response.data.trainId
     } catch (error) {
+      console.log(2222, error)
       return rejectWithValue(error.message)
     }
   }
