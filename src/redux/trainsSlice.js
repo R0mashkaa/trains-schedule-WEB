@@ -36,7 +36,8 @@ export const addFavoriteTrain = createAsyncThunk(
         },
         {
           headers: { Authorization: `Bearer ${token}` },
-        })
+        }
+      )
 
       return response.data
     } catch (error) {
@@ -72,8 +73,8 @@ export const deleteFavoriteTrain = createAsyncThunk(
         `${route.trains_userFavoriteTrains}/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        })
-
+        }
+      )
 
       return response.data.trainId
     } catch (error) {

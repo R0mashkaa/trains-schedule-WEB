@@ -51,12 +51,12 @@ export const Navbar = () => {
   const handleSignIn = async () => {
     if (!isFormValid) return
     try {
-      const { data } = await axiosInstance.post(route.auth_signIn, {
-        email: formData.email,
-        password: formData.password,
-      }).then(
-        toast.success('Successfully signed in!')
-      )
+      const { data } = await axiosInstance
+        .post(route.auth_signIn, {
+          email: formData.email,
+          password: formData.password,
+        })
+        .then(toast.success('Successfully signed in!'))
       Cookies.set('access_token', data.access_token, { expires: 1 })
       setUserToken(data.access_token)
       setIsDropdownOpen(false)
@@ -69,9 +69,7 @@ export const Navbar = () => {
   const handleSignUp = async () => {
     if (!isFormValid) return
     try {
-      const { data } = await axiosInstance.post(route.auth_signUp, formData).then(
-        toast.success('Successfully signed in!')
-      )
+      const { data } = await axiosInstance.post(route.auth_signUp, formData)
       if (data.access_token) {
         Cookies.set('access_token', data.access_token, { expires: 1 })
         setUserToken(data.access_token)

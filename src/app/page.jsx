@@ -38,10 +38,11 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getStationsCity())
-    dispatch(getMyProfile({ token: userToken }))
-      .then(response => {
-        setFavorites(response?.payload?.favorite_routes?.map(item => item.trainId))
-      })
+    dispatch(getMyProfile({ token: userToken })).then((response) => {
+      setFavorites(
+        response?.payload?.favorite_routes?.map((item) => item.trainId)
+      )
+    })
     setMounted(true)
   }, [dispatch, userToken])
 
@@ -63,7 +64,7 @@ export default function Home() {
       dispatch(deleteFavoriteTrain({ id: trainId, token: userToken }))
         .then(() => {
           toast.success('Train removed from favorites!')
-          setFavorites(favorites.filter(id => id !== trainId))
+          setFavorites(favorites.filter((id) => id !== trainId))
         })
         .catch((error) => {
           toast.error('Failed to remove train from favorites.')
@@ -131,7 +132,8 @@ export default function Home() {
               />
             </div>
           ) : (
-            !loading && trains.length > 0 && (
+            !loading &&
+            trains.length > 0 && (
               <p className="text-center text-gray-500 pt-10">
                 No trains were found for the route and date provided
               </p>

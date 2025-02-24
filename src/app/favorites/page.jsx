@@ -26,10 +26,9 @@ export default function Favorite() {
     const accessToken = Cookies.get('access_token')
 
     if (accessToken) {
-      dispatch(fetchFavoriteTrains({ token: accessToken }))
-        .catch(() =>
-          toast.error('Failed to load favorite trains. Please try again.')
-        )
+      dispatch(fetchFavoriteTrains({ token: accessToken })).catch(() =>
+        toast.error('Failed to load favorite trains. Please try again.')
+      )
     } else {
       console.error('Access token not found in cookies')
     }
