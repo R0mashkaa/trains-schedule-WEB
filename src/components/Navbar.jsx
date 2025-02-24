@@ -69,12 +69,13 @@ export const Navbar = () => {
   const handleSignUp = async () => {
     if (!isFormValid) return
     try {
-      const { data } = await axiosInstance.post(route.auth_signUp, formData)
+      const { data } = await axiosInstance.post(route.auth_signUp, formData).then(
+        toast.success('Successfully signed in!')
+      )
       if (data.access_token) {
         Cookies.set('access_token', data.access_token, { expires: 1 })
         setUserToken(data.access_token)
         setIsDropdownOpen(false)
-        toast.success('Successfully registered!')
       }
     } catch (error) {
       console.error('Sign-up error:', error)
