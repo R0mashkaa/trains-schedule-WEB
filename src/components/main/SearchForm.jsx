@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { FaExchangeAlt } from 'react-icons/fa'
 
 const SearchForm = ({
@@ -20,29 +19,19 @@ const SearchForm = ({
 }) => {
   const handleSelectCity = (city, field) => {
     if (field === 'from') {
-      if (city === to) return;
       setFrom(city)
       setFromDropdownVisible(false)
     } else {
-      if (city === from) return;
       setTo(city)
       setToDropdownVisible(false)
     }
   }
 
-  const handleInputChange = (value, field) => {
-    if (field === 'from') {
-      if (value === to) return;
-      setFrom(value)
-    } else {
-      if (value === from) return;
-      setTo(value)
-    }
-  }
-
-  const filterCities = (cities, query) => {
-    return cities.filter((city) =>
-      city.toLowerCase().includes(query.toLowerCase())
+  const filterAvailableCities = (cities, query, oppositeCity) => {
+    return cities.filter(
+      (city) =>
+        city.toLowerCase().includes(query.toLowerCase()) &&
+        city !== oppositeCity
     )
   }
 
@@ -55,20 +44,24 @@ const SearchForm = ({
             type="text"
             placeholder="From"
             value={from}
-            onChange={(e) => handleInputChange(e.target.value, 'from')}
+            onChange={(e) => setFrom(e.target.value)}
             onFocus={() => setFromDropdownVisible(true)}
             onBlur={() => setTimeout(() => setFromDropdownVisible(false), 100)}
+            autoComplete="off"
             className="px-4 py-3 w-full border rounded-xl text-lg focus:outline-none"
           />
           {fromDropdownVisible && (
-            <ul className={`absolute top-full left-0 w-full border border-gray-300 shadow-lg z-10 max-h-40 overflow-y-auto ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-gray-600'}`}>
-              {filterCities(
+            <ul
+              className={`absolute top-full left-0 w-full border border-gray-300 shadow-lg z-10 max-h-40 overflow-y-auto ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-gray-600'}`}
+            >
+              {filterAvailableCities(
                 stationsCity.map((station) => station.city),
-                from
+                from,
+                to
               ).map((city, idx) => (
                 <li
                   key={idx}
-                  className={`px-4 py-2 hover:bg-gray-200 cursor-pointer ${city === to ? 'text-gray-400 cursor-not-allowed' : ''}`}
+                  className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                   onClick={() => handleSelectCity(city, 'from')}
                 >
                   {city}
@@ -81,10 +74,8 @@ const SearchForm = ({
         <button
           className="bg-gray-200 p-2 rounded-full"
           onClick={() => {
-            if (from !== to) {
-              setFrom(to)
-              setTo(from)
-            }
+            setFrom(to)
+            setTo(from)
           }}
         >
           <FaExchangeAlt className="text-xl text-gray-600" />
@@ -96,20 +87,24 @@ const SearchForm = ({
             type="text"
             placeholder="To"
             value={to}
-            onChange={(e) => handleInputChange(e.target.value, 'to')}
+            onChange={(e) => setTo(e.target.value)}
             onFocus={() => setToDropdownVisible(true)}
             onBlur={() => setTimeout(() => setToDropdownVisible(false), 100)}
+            autoComplete="off"
             className="px-4 py-3 w-full border rounded-xl text-lg focus:outline-none"
           />
           {toDropdownVisible && (
-            <ul className={`absolute top-full left-0 w-full border border-gray-300 shadow-lg z-10 max-h-40 overflow-y-auto ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-gray-600'}`}>
-              {filterCities(
+            <ul
+              className={`absolute top-full left-0 w-full border border-gray-300 shadow-lg z-10 max-h-40 overflow-y-auto ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-gray-600'}`}
+            >
+              {filterAvailableCities(
                 stationsCity.map((station) => station.city),
-                to
+                to,
+                from // Фільтруємо, щоб не можна було вибрати 'from' у 'to'
               ).map((city, idx) => (
                 <li
                   key={idx}
-                  className={`px-4 py-2 hover:bg-gray-200 cursor-pointer ${city === from ? 'text-gray-400 cursor-not-allowed' : ''}`}
+                  className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                   onClick={() => handleSelectCity(city, 'to')}
                 >
                   {city}
@@ -127,6 +122,7 @@ const SearchForm = ({
           value={date}
           onChange={(e) => setDate(e.target.value)}
           className="px-4 py-3 w-full border rounded-xl text-lg focus:outline-none"
+          autoComplete="off"
         />
       </div>
 

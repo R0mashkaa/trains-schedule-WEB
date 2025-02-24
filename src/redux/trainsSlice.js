@@ -31,7 +31,7 @@ export const addFavoriteTrain = createAsyncThunk(
     try {
       const token = payload.token
       const response = await axiosInstance.post(
-        route.trains_userFavoriteItrans,
+        route.trains_userFavoriteTrains,
         {
           trainId: payload.trainId,
         },
@@ -53,11 +53,13 @@ export const fetchFavoriteTrains = createAsyncThunk(
     try {
       const token = payload.token
       const response = await axiosInstance.get(
-        route.trains_userFavoriteItrans,
+        route.trains_userFavoriteTrains,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
+
+      console.log(response)
 
       return response.data
     } catch (error) {
@@ -71,7 +73,7 @@ export const deleteFavoriteTrain = createAsyncThunk(
   async ({ id, token }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.delete(
-        `${route.trains_userFavoriteItrans}/${id}`,
+        `${route.trains_userFavoriteTrains}/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

@@ -21,7 +21,7 @@ export default function Favorite() {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
-  const handleFindTrains = () => {
+  const handleFindFavoriteTrains = () => {
     const accessToken = Cookies.get('access_token')
 
     if (accessToken) {
@@ -46,7 +46,7 @@ export default function Favorite() {
   }, [])
 
   useEffect(() => {
-    handleFindTrains()
+    handleFindFavoriteTrains()
   }, [])
 
   if (!mounted) return null

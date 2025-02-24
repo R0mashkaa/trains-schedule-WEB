@@ -7,7 +7,7 @@ export const route = {
   user_getMyProfile: `${API_BASE_URL}/users/myProfile`,
 
   trains_base: `${API_BASE_URL}/trains`,
-  trains_userFavoriteItrans: `${API_BASE_URL}/users/user-favoriteTrains`,
+  trains_userFavoriteTrains: `${API_BASE_URL}/user-favoriteTrains`,
 
   stations_base: `${API_BASE_URL}/stations`,
 }

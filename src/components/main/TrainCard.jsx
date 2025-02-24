@@ -19,7 +19,7 @@ const TrainCard = ({
         >
           <FiHeart
             size={24}
-            className={`text-gray-500 hover:text-red-500 ${isFavorite(train.id) ? 'text-red-500' : 'text-gray-500'}`}
+            className={`absolute top-2 right-2 cursor-pointer transition-colors duration-300 ${isFavorite(train.id) ? 'text-red-500' : 'text-gray-500'}`}
           />
         </div>
       )}

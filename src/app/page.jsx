@@ -64,14 +64,16 @@ export default function Home() {
   }
 
   const isFavorite = (trainId) => {
-    dispatch(getMyProfile({ token: userToken }))
+    // Check if the trainId exists in the user's favorite_routes
     return user?.favorite_routes.some((item) => item.trainId === trainId)
   }
 
   return (
     <Container>
       <div
-        className={`transition-all duration-300 ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}
+        className={`transition-all duration-300 ${
+          theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
+        }`}
       >
         <div className="p-4 rounded-xl flex flex-col gap-4">
           <SearchForm
@@ -90,7 +92,7 @@ export default function Home() {
             theme={theme}
           />
 
-          {trains.length > 0 && (
+          {trains.length > 0 ? (
             <div className="mt-6">
               <h3 className="text-xl font-semibold mb-4">
                 Trains found - {trains.length}
@@ -112,12 +114,15 @@ export default function Home() {
                 paginate={paginate}
               />
             </div>
+          ) : (
+            !loading && (
+              <p className="text-center text-gray-500 pt-10">
+                No trains were found for the route and date provided
+              </p>
+            )
           )}
         </div>
       </div>
-
-      {loading && <Loader />}
-      {error && <ErrorAlert message={error} />}
     </Container>
   )
 }
