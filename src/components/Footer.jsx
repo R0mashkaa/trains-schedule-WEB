@@ -4,13 +4,7 @@ import Icons from '@/components/icons/icons.jsx'
 import { Container } from '@/components/Container'
 
 export function Footer() {
-  const navigation = [
-    { label: 'Product', route: '/' },
-    { label: 'Features', route: '/' },
-    { label: 'Pricing', route: '/' },
-    { label: 'Company', route: '/' },
-    { label: 'Blog', route: '/' },
-  ]
+  const navigation = []
 
   const legal = [
     { label: 'Terms', route: '/' },
