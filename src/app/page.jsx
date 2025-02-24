@@ -129,7 +129,7 @@ export default function Home() {
               />
             </div>
           ) : (
-            !loading && (
+            !loading && trains.length > 0 && (
               <p className="text-center text-gray-500 pt-10">
                 No trains were found for the route and date provided
               </p>
