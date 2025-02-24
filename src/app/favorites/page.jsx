@@ -65,10 +65,7 @@ export default function Favorite() {
       <div
         className={`transition-all duration-300 ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}
       >
-        {loading && <Loader />}
-        {error && <ErrorAlert message={error} />}
-
-        {favoriteTrains.length > 0 ? (
+       {favoriteTrains.length > 0 ? (
           <div className="mt-6">
             <h3 className="text-xl font-semibold mb-4">
               Trains found - {favoriteTrains.length}
@@ -158,6 +155,8 @@ export default function Favorite() {
           )
         )}
       </div>
+      {loading && <Loader />}
+      {error && <ErrorAlert message={error} />}
     </Container>
   )
 }
