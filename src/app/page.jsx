@@ -40,7 +40,7 @@ export default function Home() {
     dispatch(getStationsCity())
     dispatch(getMyProfile({ token: userToken }))
       .then(response => {
-        setFavorites(response.payload.favorite_routes.map(item => item.trainId))
+        setFavorites(response?.payload?.favorite_routes?.map(item => item.trainId))
       })
     setMounted(true)
   }, [dispatch, userToken])
