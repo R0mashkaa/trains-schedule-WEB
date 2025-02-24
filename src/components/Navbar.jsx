@@ -54,11 +54,12 @@ export const Navbar = () => {
       const { data } = await axiosInstance.post(route.auth_signIn, {
         email: formData.email,
         password: formData.password,
-      })
+      }).then(
+        toast.success('Successfully signed in!')
+      )
       Cookies.set('access_token', data.access_token, { expires: 1 })
       setUserToken(data.access_token)
       setIsDropdownOpen(false)
-      toast.success('Successfully signed in!')
     } catch (error) {
       console.error('Sign-in error:', error)
       toast.error('Failed to sign in. Please check your credentials.')

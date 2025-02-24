@@ -82,7 +82,7 @@ export default function Home() {
     }
   }
 
-  const isFavorite = (trainId) => favorites.includes(trainId)
+  const isFavorite = (trainId) => favorites?.includes(trainId)
 
   return (
     <Container>
