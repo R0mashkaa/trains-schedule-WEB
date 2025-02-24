@@ -20,11 +20,23 @@ const SearchForm = ({
 }) => {
   const handleSelectCity = (city, field) => {
     if (field === 'from') {
+      if (city === to) return;
       setFrom(city)
       setFromDropdownVisible(false)
     } else {
+      if (city === from) return;
       setTo(city)
       setToDropdownVisible(false)
+    }
+  }
+
+  const handleInputChange = (value, field) => {
+    if (field === 'from') {
+      if (value === to) return;
+      setFrom(value)
+    } else {
+      if (value === from) return;
+      setTo(value)
     }
   }
 
@@ -43,7 +55,7 @@ const SearchForm = ({
             type="text"
             placeholder="From"
             value={from}
-            onChange={(e) => setFrom(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value, 'from')}
             onFocus={() => setFromDropdownVisible(true)}
             onBlur={() => setTimeout(() => setFromDropdownVisible(false), 100)}
             className="px-4 py-3 w-full border rounded-xl text-lg focus:outline-none"
@@ -56,7 +68,7 @@ const SearchForm = ({
               ).map((city, idx) => (
                 <li
                   key={idx}
-                  className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                  className={`px-4 py-2 hover:bg-gray-200 cursor-pointer ${city === to ? 'text-gray-400 cursor-not-allowed' : ''}`}
                   onClick={() => handleSelectCity(city, 'from')}
                 >
                   {city}
@@ -69,8 +81,10 @@ const SearchForm = ({
         <button
           className="bg-gray-200 p-2 rounded-full"
           onClick={() => {
-            setFrom(to)
-            setTo(from)
+            if (from !== to) {
+              setFrom(to)
+              setTo(from)
+            }
           }}
         >
           <FaExchangeAlt className="text-xl text-gray-600" />
@@ -82,26 +96,26 @@ const SearchForm = ({
             type="text"
             placeholder="To"
             value={to}
-            onChange={(e) => setTo(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value, 'to')}
             onFocus={() => setToDropdownVisible(true)}
             onBlur={() => setTimeout(() => setToDropdownVisible(false), 100)}
             className="px-4 py-3 w-full border rounded-xl text-lg focus:outline-none"
           />
-{toDropdownVisible && (
-  <ul className={`absolute top-full left-0 w-full border border-gray-300 shadow-lg z-10 max-h-40 overflow-y-auto ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-gray-600'}`}>
-    {filterCities(
-      stationsCity.map((station) => station.city),
-      to
-    ).map((city, idx) => (
-      <li
-        key={idx}
-        className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-        onClick={() => handleSelectCity(city, 'to')}
-      >
-        {city}
-      </li>
-    ))}
-  </ul>
+          {toDropdownVisible && (
+            <ul className={`absolute top-full left-0 w-full border border-gray-300 shadow-lg z-10 max-h-40 overflow-y-auto ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-gray-600'}`}>
+              {filterCities(
+                stationsCity.map((station) => station.city),
+                to
+              ).map((city, idx) => (
+                <li
+                  key={idx}
+                  className={`px-4 py-2 hover:bg-gray-200 cursor-pointer ${city === from ? 'text-gray-400 cursor-not-allowed' : ''}`}
+                  onClick={() => handleSelectCity(city, 'to')}
+                >
+                  {city}
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       </div>
