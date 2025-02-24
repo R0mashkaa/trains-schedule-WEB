@@ -24,6 +24,7 @@ export default function Home() {
   const trainsPerPage = 5
   const [fromDropdownVisible, setFromDropdownVisible] = useState(false)
   const [toDropdownVisible, setToDropdownVisible] = useState(false)
+  const [favorites, setFavorites] = useState([])
 
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.user)
@@ -36,12 +37,13 @@ export default function Home() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (userToken) {
-      dispatch(getMyProfile({ token: userToken }))
-    }
     dispatch(getStationsCity())
+    dispatch(getMyProfile({ token: userToken }))
+      .then(response => {
+        setFavorites(response.payload.favorite_routes.map(item => item.trainId))
+      })
     setMounted(true)
-  }, [])
+  }, [dispatch, userToken])
 
   if (!mounted) return null
 
@@ -57,10 +59,11 @@ export default function Home() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
   const handleAddToFavorites = (trainId) => {
-    if (isFavorite(trainId)) {
+    if (favorites.includes(trainId)) {
       dispatch(deleteFavoriteTrain({ id: trainId, token: userToken }))
         .then(() => {
           toast.success('Train removed from favorites!')
+          setFavorites(favorites.filter(id => id !== trainId))
         })
         .catch((error) => {
           toast.error('Failed to remove train from favorites.')
@@ -70,6 +73,7 @@ export default function Home() {
       dispatch(addFavoriteTrain({ trainId, token: userToken }))
         .then(() => {
           toast.success('Train added to favorites!')
+          setFavorites([...favorites, trainId])
         })
         .catch((error) => {
           toast.error('Failed to add train to favorites.')
@@ -78,9 +82,7 @@ export default function Home() {
     }
   }
 
-  const isFavorite = (trainId) => {
-    return user?.favorite_routes.some((item) => item.trainId === trainId)
-  }
+  const isFavorite = (trainId) => favorites.includes(trainId)
 
   return (
     <Container>

@@ -27,7 +27,6 @@ export default function Favorite() {
 
     if (accessToken) {
       dispatch(fetchFavoriteTrains({ token: accessToken }))
-        .then(() => toast.success('Favorite trains loaded successfully!'))
         .catch(() =>
           toast.error('Failed to load favorite trains. Please try again.')
         )

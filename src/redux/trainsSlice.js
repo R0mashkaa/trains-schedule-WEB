@@ -59,8 +59,6 @@ export const fetchFavoriteTrains = createAsyncThunk(
         }
       )
 
-      console.log(response)
-
       return response.data
     } catch (error) {
       return rejectWithValue(error.message)
@@ -78,8 +76,6 @@ export const deleteFavoriteTrain = createAsyncThunk(
           headers: { Authorization: `Bearer ${token}` },
         }
       )
-
-      console.log(response)
 
       return response.data.trainId
     } catch (error) {
