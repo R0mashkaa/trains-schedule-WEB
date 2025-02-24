@@ -1,19 +1,19 @@
 'use client'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import ThemeChanger from './DarkSwitch'
+import { ToastContainer, toast } from 'react-toastify'
 import Image from 'next/image'
 import Cookies from 'js-cookie'
-import { useState, useRef, useEffect } from 'react'
 import { FaUser } from 'react-icons/fa'
+
+import ThemeChanger from './DarkSwitch'
 import { route, axiosInstance } from '@/components/requests'
 
 export const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isRegistered, setIsRegistered] = useState(false)
   const [userToken, setUserToken] = useState(Cookies.get('access_token') ?? '')
-  const dropdownRef = useRef(null)
-  const pathname = usePathname()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,6 +21,8 @@ export const Navbar = () => {
     lastName: '',
   })
   const [isFormValid, setIsFormValid] = useState(false)
+  const dropdownRef = useRef(null)
+  const pathname = usePathname()
 
   useEffect(() => {
     setIsFormValid(
@@ -56,8 +58,10 @@ export const Navbar = () => {
       Cookies.set('access_token', data.access_token, { expires: 1 })
       setUserToken(data.access_token)
       setIsDropdownOpen(false)
+      toast.success('Successfully signed in!')
     } catch (error) {
       console.error('Sign-in error:', error)
+      toast.error('Failed to sign in. Please check your credentials.')
     }
   }
 
@@ -69,9 +73,11 @@ export const Navbar = () => {
         Cookies.set('access_token', data.access_token, { expires: 1 })
         setUserToken(data.access_token)
         setIsDropdownOpen(false)
+        toast.success('Successfully registered!')
       }
     } catch (error) {
       console.error('Sign-up error:', error)
+      toast.error('Failed to register. Please try again.')
     }
   }
 
@@ -222,6 +228,13 @@ export const Navbar = () => {
           </div>
         </div>
       </nav>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+      />
     </div>
   )
 }

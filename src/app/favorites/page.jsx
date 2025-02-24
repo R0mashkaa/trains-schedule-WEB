@@ -1,13 +1,14 @@
 'use client'
 
 import { useDispatch, useSelector } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { useTheme } from 'next-themes'
 import { FiHeart } from 'react-icons/fi'
 
 import { fetchFavoriteTrains, deleteFavoriteTrain } from '@/redux/trainsSlice'
-import { Container, ErrorAlert, Loader } from '@/components'
+import { Container, Loader } from '@/components'
 
 export default function Favorite() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -26,6 +27,10 @@ export default function Favorite() {
 
     if (accessToken) {
       dispatch(fetchFavoriteTrains({ token: accessToken }))
+        .then(() => toast.success('Favorite trains loaded successfully!'))
+        .catch(() =>
+          toast.error('Failed to load favorite trains. Please try again.')
+        )
     } else {
       console.error('Access token not found in cookies')
     }
@@ -38,6 +43,14 @@ export default function Favorite() {
 
     if (accessToken) {
       dispatch(deleteFavoriteTrain({ id, token: accessToken }))
+        .then(() => {
+          toast.success('Train removed from favorites!')
+        })
+        .catch(() => {
+          toast.error('Failed to remove train from favorites.')
+        })
+    } else {
+      console.error('Access token not found in cookies')
     }
   }
 
@@ -65,7 +78,7 @@ export default function Favorite() {
       <div
         className={`transition-all duration-300 ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}
       >
-       {favoriteTrains.length > 0 ? (
+        {favoriteTrains.length > 0 ? (
           <div className="mt-6">
             <h3 className="text-xl font-semibold mb-4">
               Trains found - {favoriteTrains.length}
@@ -156,7 +169,12 @@ export default function Favorite() {
         )}
       </div>
       {loading && <Loader />}
-      {error && <ErrorAlert message={error} />}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+      />
     </Container>
   )
 }

@@ -1,5 +1,6 @@
 'use client'
 import { useDispatch, useSelector } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify'
 import { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { useTheme } from 'next-themes'
@@ -12,7 +13,7 @@ import {
 import { getMyProfile } from '@/redux/userSlice'
 import { getStationsCity } from '@/redux/stationsSlice'
 import { SearchForm, TrainCard, Pagination } from '@/components/main'
-import { Loader, ErrorAlert, Container } from '@/components'
+import { Loader, Container } from '@/components'
 
 export default function Home() {
   const userToken = Cookies.get('access_token') ?? ''
@@ -58,8 +59,22 @@ export default function Home() {
   const handleAddToFavorites = (trainId) => {
     if (isFavorite(trainId)) {
       dispatch(deleteFavoriteTrain({ id: trainId, token: userToken }))
+        .then(() => {
+          toast.success('Train removed from favorites!')
+        })
+        .catch((error) => {
+          toast.error('Failed to remove train from favorites.')
+          console.error(error)
+        })
     } else {
       dispatch(addFavoriteTrain({ trainId, token: userToken }))
+        .then(() => {
+          toast.success('Train added to favorites!')
+        })
+        .catch((error) => {
+          toast.error('Failed to add train to favorites.')
+          console.error(error)
+        })
     }
   }
 
@@ -124,7 +139,12 @@ export default function Home() {
       </div>
 
       {loading && <Loader />}
-      {error && <ErrorAlert message={error} />}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+      />
     </Container>
   )
 }

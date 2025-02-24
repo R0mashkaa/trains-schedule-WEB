@@ -1,4 +1,3 @@
-export { default as ErrorAlert } from './Alert'
 export { default as DarkSwitch } from './DarkSwitch'
 export { default as Loader } from './Loader'
 export { Container } from './Container'
