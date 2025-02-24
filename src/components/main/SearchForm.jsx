@@ -100,7 +100,7 @@ const SearchForm = ({
               {filterAvailableCities(
                 stationsCity.map((station) => station.city),
                 to,
-                from // Фільтруємо, щоб не можна було вибрати 'from' у 'to'
+                from
               ).map((city, idx) => (
                 <li
                   key={idx}

@@ -64,7 +64,6 @@ export default function Home() {
   }
 
   const isFavorite = (trainId) => {
-    // Check if the trainId exists in the user's favorite_routes
     return user?.favorite_routes.some((item) => item.trainId === trainId)
   }
 
@@ -123,6 +122,9 @@ export default function Home() {
           )}
         </div>
       </div>
+
+      {loading && <Loader />}
+      {error && <ErrorAlert message={error} />}
     </Container>
   )
 }
